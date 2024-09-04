@@ -53,3 +53,4 @@ Note : we should be able to access public bucket without credentials, but for so
 Once the environment is built and configured, you can run the pipeline (finally !).
 
 Open a browser at `http://localhost:8080/home` and run `shopify_configuration_2_postgres` DAG.
+

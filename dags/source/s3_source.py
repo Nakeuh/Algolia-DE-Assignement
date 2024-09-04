@@ -13,7 +13,13 @@ def get_s3_client(access_key: str, secret_key: str):
 
 
 # Retrieve data from S3
-def get_data_func(ti, **kwargs):
+# expected kwargs :
+#   - s3_client : the boto3 s3 client that will be used to read data
+#   - bucket_name : the bucket name to read data from
+#   - filepath : the path of the file to read in the bucket
+# return (XCOM):
+#   - data: the content of the file as string
+def get_data(ti, **kwargs):
     s3_client = kwargs["s3_client"]
     bucket_name = kwargs["bucket_name"]
     filepath = kwargs["filepath"]

@@ -10,7 +10,7 @@ To use this project, you must have installed :
 
 You will also need AWS credentials.
 
-## Build 
+## Start environment 
 
 In project's folder, run 
 
@@ -18,7 +18,7 @@ In project's folder, run
 > docker compose up
 ```
 
-## Check Environement
+## Check environment
 
 ### Airflow
 
@@ -58,7 +58,7 @@ Open a browser at `http://localhost:8080/home` and Unpause "`shopify_configurati
 * Airflow should trigger 7 runs of the pipeline (one after the other)
 * One of them (start date = 2019-04-03) should have all it's steps as skipped because the input file is missing for this date
 
-![alt text](image.png)
+![alt text](doc/images/run_chart.png)
 * Data are properly inserted in Postgres : 
 
 ```console
@@ -96,4 +96,4 @@ On Root folder, run
 > pytest .
 ```
 
-Python and pytest must be installed before
+Python and pytest must be installed locally to do so

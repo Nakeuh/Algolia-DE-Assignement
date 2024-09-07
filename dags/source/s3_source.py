@@ -5,13 +5,15 @@ from airflow.exceptions import AirflowSkipException
 
 logger = logging.getLogger(__name__)
 
-
+# Create a S3 client using given AK/SK
 def get_s3_client(access_key: str, secret_key: str):
     return boto3.client(
         "s3", aws_access_key_id=access_key, aws_secret_access_key=secret_key
     )
 
-
+# Generic function to read file from a S3 bucket
+# TODO : Add unit tests using a Mock of S3 client as 's3_client' parameter
+#
 # Retrieve data from S3
 # expected kwargs :
 #   - s3_client : the boto3 s3 client that will be used to read data
@@ -35,7 +37,7 @@ def get_data(ti, **kwargs):
             raise AirflowSkipException
     else:
         # Read the object's content as text
-        object_content = response["Body"].read().decode("utf-8")
+        object_content = response["Body"].read().decode("utf-8")    # TODO : check for error while reading/decoding the response
         # Process or use the content as needed
         logger.info(f"Data downloaded.")
         ti.xcom_push(key="data", value=object_content)

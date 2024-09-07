@@ -91,3 +91,6 @@ id-3,animal-drive-prove.myshopify.com,143PIYP1C5,True,False,0,[0],True,False,Fal
     assert expected_results_data == ti.xcom_pull(
         key="transformed_data", task_ids=TEST_TASK_ID
     )
+
+
+# TODO : test cases with bad inputs (not csv, empty data, missing columns)

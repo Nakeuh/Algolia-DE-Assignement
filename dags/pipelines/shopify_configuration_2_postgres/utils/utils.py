@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import logging
 from io import StringIO
-from airflow.exceptions import AirflowSkipException
+from airflow.exceptions import *
 
 logger = logging.getLogger(__name__)
 
@@ -23,8 +23,11 @@ def transform_data(ti=None, **kwargs) -> str:
         logger.error(f"No data retrieved from previous task.")
         raise AirflowSkipException
     
-    df = pd.read_csv(stringIo, sep=",", header=0)
+    df = pd.read_csv(stringIo, sep=",", header=0)   # TODO handle error if data is not CSV
     logger.info(f"{len(df.index)} lines loaded.")
+
+    if "application_id" not in df or "index_prefix" not in df :
+        raise AirflowFailException
 
     # Filter out each row with empty application_id
     df = df[df["application_id"].str.len() > 0]

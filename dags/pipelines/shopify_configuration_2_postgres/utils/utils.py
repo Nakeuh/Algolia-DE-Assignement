@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import logging
 from io import StringIO
+from airflow.exceptions import AirflowSkipException
 
 logger = logging.getLogger(__name__)
 
@@ -15,8 +16,14 @@ logger = logging.getLogger(__name__)
 def transform_data(ti=None, **kwargs) -> str:
     data_attribute_name = kwargs["data_attribute_name"]
     data_task_id = kwargs["data_task_id"]
-    csvStringIO = StringIO(ti.xcom_pull(key=data_attribute_name, task_ids=data_task_id))
-    df = pd.read_csv(csvStringIO, sep=",", header=0)
+    stringIo = StringIO(ti.xcom_pull(key=data_attribute_name, task_ids=data_task_id))
+    data = stringIo.getvalue()
+
+    if len(data) == 0:
+        logger.error(f"No data retrieved from previous task.")
+        raise AirflowSkipException
+    
+    df = pd.read_csv(stringIo, sep=",", header=0)
     logger.info(f"{len(df.index)} lines loaded.")
 
     # Filter out each row with empty application_id
